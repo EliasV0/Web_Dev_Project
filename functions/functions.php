@@ -1,5 +1,4 @@
 <?php
-// Use absolute path based on the current file's directory to ensure it works from any inclusion context
 require_once '../database/db_connect.php';
 
 // Get all courses
@@ -41,15 +40,4 @@ function getStudentGrades($conn, $student_id) {
     return $stmt->get_result();
 }
 
-// Get pending assignments
-function getPendingAssignments($conn, $student_id) {
-    $sql = "SELECT a.*, c.title as course_title 
-            FROM assignments a
-            JOIN courses c ON a.course_id = c.id
-            WHERE a.id NOT IN (SELECT assignment_id FROM submissions WHERE student_id = ?)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("i", $student_id);
-    $stmt->execute();
-    return $stmt->get_result();
-}
 ?>
